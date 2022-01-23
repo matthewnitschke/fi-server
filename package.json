@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "start": "node app.js",
-    "format": "prettier --write . --config ../.prettierrc"
+    "format": "prettier --write . --config ../.prettierrc",
+    "serve": "doppler run --command=\"docker compose -f docker-compose.yaml -f docker-compose.dev.yaml up\""
   },
   "dependencies": {
     "body-parser": "^1.19.0",

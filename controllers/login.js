@@ -1,16 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const path = require('path');
 
 const Account = require('../models/Account');
-
-router.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../../client/login-client/index.html'));
-});
-
-router.get('/styles.css', (req, res) => {
-  res.sendFile(path.join(__dirname, '../../client/login-client/styles.css'));
-});
 
 router.post('/authenticate', async (req, res) => {
   console.log('authenticate');
