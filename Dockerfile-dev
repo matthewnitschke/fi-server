@@ -2,8 +2,8 @@ FROM node:alpine
 
 RUN apk add --no-cache bash
 
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
-ENV PATH /usr/src/app/node_modules/.bin:$PATH
+RUN mkdir -p /app
+WORKDIR /app
+ENV PATH /app/node_modules/.bin:$PATH
 
 RUN npm add nodemon -g

@@ -12,11 +12,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-dev
-    command: nodemon --watch server /usr/src/app/server/app.js
+    command: nodemon /app/app.js
     volumes:
-      - ./server/:/usr/src/app/server
-      - ./client/:/usr/src/app/client
-      - ./auth-client/:/usr/src/app/auth-client
+      - ./:/app
     environment:
       - NODE_ENV=development
       - SESSION_SECRET="Shhh... development only"
