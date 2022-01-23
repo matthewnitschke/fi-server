@@ -7,10 +7,7 @@ const mongoose = require('mongoose');
 const authentication = require('./middleware/authentication');
 
 const app = express();
-const port = 8888;
-
-// a list of routes that are acceptable and serve the index.html file
-const availableRoutes = ['/', '/plaid-admin'];
+const port = 8080;
 
 (async () => {
   await require('./db')(); // ensure db is initialized
@@ -27,10 +24,6 @@ const availableRoutes = ['/', '/plaid-admin'];
 
   app.use('/login', require('./controllers/login'));
   app.use(authentication);
-  
-  availableRoutes.forEach((route) => {
-    app.use(route, express.static(path.join(__dirname, '../client/build/web')))
-  })
   
   app.use('/budget', require('./controllers/api/budget'));
   app.use('/transactions', require('./controllers/api/transactions'));
