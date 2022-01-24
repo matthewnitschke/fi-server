@@ -1,11 +1,9 @@
-FROM node
-
-COPY --from=builder /app/build /app
+FROM node:alpine
 
 WORKDIR /app/
-ADD server/package.json .
+ADD package.json .
 RUN npm install
 
-ADD server .
+ADD . .
 
 CMD ["npm", "start"]

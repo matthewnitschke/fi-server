@@ -19,7 +19,7 @@ services:
     ports:
       - "27017:27017"
     volumes:
-      - "/data/db:/data/db"
+      - fi_data:/data/db
 
   server:
     image: matthewnitschke/fi-server:latest
@@ -31,7 +31,5 @@ services:
       PLAID_CLIENT_ID: ${PLAID_CLIENT_ID}
       PLAID_SECRET: ${PLAID_SECRET}
 
-# networks:
-#   default:
-#     external:
-#       name: fi-network
+volumes:
+  fi_data:
