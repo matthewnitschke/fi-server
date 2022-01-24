@@ -15,7 +15,7 @@ services:
   db:
     logging:
       driver: none
-    image: mongo
+    image: mongo:4.4.6 # 4.4.6 supports non-avx
     ports:
       - "27017:27017"
     volumes:
