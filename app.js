@@ -6,11 +6,15 @@ const MongoStore = require('connect-mongo')(session);
 const mongoose = require('mongoose');
 const authentication = require('./middleware/authentication');
 
+var cors = require('cors')
+
 const app = express();
 const port = 8080;
 
 (async () => {
   await require('./db')(); // ensure db is initialized
+
+  app.use(cors())
   
   app.use(
     session({
