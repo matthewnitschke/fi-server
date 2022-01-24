@@ -8,6 +8,7 @@ const AccountSchema = new mongoose.Schema({
 
   plaidAccessToken: String,
   lastTransactionsSync: Date,
+  lastLogin: Date,
 });
 
 // Method to set salt and hash the password for a user

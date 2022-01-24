@@ -21,6 +21,8 @@ const port = 8080;
   
   app.use(express.urlencoded({ extended: false }));
   app.use(express.json());
+  
+  app.use('/admin', require('./admin/admin.js'));
 
   app.use('/login', require('./controllers/login'));
   app.use(authentication);
@@ -29,6 +31,7 @@ const port = 8080;
   app.use('/transactions', require('./controllers/api/transactions'));
   app.use('/plaid', require('./controllers/api/plaid'));
   app.use('/plaid-admin', require('./controllers/api/plaid-admin'));
+
 
   app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);

@@ -1,6 +1,4 @@
 const Budget = require('../../models/Budget');
-const Transaction = require('../../models/Transaction');
-
 const express = require('express');
 const router = express.Router();
 
@@ -9,9 +7,12 @@ router.get('/:year/:month', async (req, res) => {
   const { year, month } = req.params;
   const { accountId } = req.session;
 
+  // normalize input, so `01` always becomes `1`
+  const date = `${parseInt(year)}/${parseInt(month)}`;
+
   const foundBudget = await Budget.findOne({
     accountId: accountId,
-    date: `${year}/${month}`,
+    date: date,
   });
 
   if (foundBudget == null) {
@@ -26,9 +27,12 @@ router.post('/:year/:month', async (req, res) => {
   const { year, month } = req.params;
   const { accountId } = req.session;
 
+  // normalize input, so `01` always becomes `1`
+  const date = `${parseInt(year)}/${parseInt(month)}`;
+
   const foundBudget = await Budget.findOne({
     accountId: accountId,
-    date: `${year}/${month}`,
+    date: date,
   });
 
   if (foundBudget) {
@@ -43,7 +47,7 @@ router.post('/:year/:month', async (req, res) => {
   } else {
     let newBudget = new Budget({
       accountId,
-      date: `${year}/${month}`,
+      date: date,
       storeData: req.body.serializedStore,
     });
 
@@ -57,9 +61,12 @@ router.delete('/:year/:month', async (req, res) => {
   const { year, month } = req.params;
   const { accountId } = req.session;
 
+  // normalize input, so `01` always becomes `1`
+  const date = `${parseInt(year)}/${parseInt(month)}`;
+
   await Budget.findOneAndDelete({
     accountId: accountId,
-    date: `${year}/${month}`,
+    date: date,
   });
 
   res.status(200).send('OK');

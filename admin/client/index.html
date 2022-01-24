@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fi - Admin</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/pure-min.css" integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aehk5" crossorigin="anonymous">
+
+    <style>
+        #app {
+            max-width: 50rem;
+            margin: 5rem auto;
+            text-align: center;
+        }
+
+        .accounts-table {
+            margin: auto;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1>Fi - Admin</h1>
+        <pre>
+            Plaid Env: {{ plaidEnv }}
+        </pre>
+        <table class="accounts-table pure-table">
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Last Login</th>
+                    <th>Plaid Access Token</th>
+                    <th>Test Plaid Api</th>
+                    <th>Sync Transactions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="account in accounts">
+                    <td>{{ account.email }}</td>
+                    <td>{{ new Date(account.lastLogin).toISOString().substring(0, 10) }}</td>
+                    <td>
+                        <input 
+                            type="text" 
+                            v-bind:value="account.plaidAccessToken"
+                            v-on:blur="updatePlaidAccessToken(account, $event.target.value)">
+                    </td>
+                    <td>
+                        <input
+                            class="pure-button"
+                            type="button"
+                            @click="testPlaidApi(account)" 
+                            value="Test" />
+                    </td>
+                    <td>
+                        <input
+                            class="pure-button"
+                            type="button"
+                            @click="syncTransactions(account)" 
+                            value="Sync Transactions" />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script src="admin/app.js"></script>
+</body>
+</html>

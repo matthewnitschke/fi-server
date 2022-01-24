@@ -29,6 +29,9 @@ router.post('/authenticate', async (req, res) => {
 
       console.log(`accountId: ${req.session.accountId}`)
 
+      account.lastLogin = new Date()
+      account.save();
+      
       return res.status(201).send({
         message: 'Authenticated!',
       });
@@ -42,6 +45,12 @@ router.post('/authenticate', async (req, res) => {
 
 router.post('/signup', async (req, res) => {
   const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).send({
+      message: "Missing email or password"
+    })
+  }
 
   let newAccount = new Account({
     email,
