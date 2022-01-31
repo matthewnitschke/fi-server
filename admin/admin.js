@@ -150,4 +150,58 @@ router.post('/syncTransactions', async (req, res) => {
   res.status(200).send('OK')
 });
 
+
+router.post('/newAccount', async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).send({
+      message: "Missing email or password"
+    })
+  }
+
+  let newAccount = new Account({
+    email,
+  });
+
+  newAccount.setPassword(password);
+
+  newAccount.save((err) => {
+    if (err) {
+      return res.status(400).send({
+        message: 'Failed to add account.',
+      });
+    } else {
+      return res.status(201).send({
+        message: 'Account added successfully.',
+      });
+    }
+  });
+});
+
+router.delete('/deleteAccount', async (req, res) => {
+  const { accountId } = req.body;
+
+  if (!accountId) {
+    return res.status(400).send({
+      message: "Missing accountId"
+    })
+  }
+
+  await Account.deleteOne(
+    { _id: accountId },
+    function (err) {
+      if (err) {
+        return res.status(400).send({
+          message: 'Failed to delete',
+        });
+      }
+
+      return res.status(201).send({
+        message: 'Account deleted successfully',
+      });
+    }
+  );
+});
+
 module.exports = router;

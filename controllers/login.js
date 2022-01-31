@@ -4,10 +4,10 @@ const router = express.Router();
 const Account = require('../models/Account');
 
 router.post('/authenticate', async (req, res) => {
-  console.log('authenticate');
   const { email, password } = req.body;
 
   if (!email || !password) {
+    console.log("Missing email or password")
     return res.status(400).send({
       message: "Missing email or password"
     })
@@ -18,28 +18,30 @@ router.post('/authenticate', async (req, res) => {
   });
 
   if (account === null) {
+    console.log('User not found')
     return res.status(400).send({
-      message: 'User not found.',
+      message: 'User not found',
+    });
+  }
+
+  if (account.isValidPassword(password)) {
+    // valid password, add the session vars
+    req.session.accountId = account._id;
+    req.session.plaidAccessToken = account.plaidAccessToken;
+
+    console.log(`Authorizing: ${req.session.accountId}`)
+
+    account.lastLogin = new Date()
+    account.save();
+    
+    return res.status(201).send({
+      message: 'Authenticated!',
     });
   } else {
-    if (account.isValidPassword(password)) {
-      // valid password, add the session vars
-      req.session.accountId = account._id;
-      req.session.plaidAccessToken = account.plaidAccessToken;
-
-      console.log(`accountId: ${req.session.accountId}`)
-
-      account.lastLogin = new Date()
-      account.save();
-      
-      return res.status(201).send({
-        message: 'Authenticated!',
-      });
-    } else {
-      return res.status(400).send({
-        message: 'Wrong Password',
-      });
-    }
+    console.log("Wrong password")
+    return res.status(400).send({
+      message: 'Wrong Password',
+    });
   }
 });
 

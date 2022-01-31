@@ -5,16 +5,19 @@ var app = new Vue({
     accounts: [],
   },
   mounted() {
-    fetch('admin/accounts')
-      .then(resp => resp.json())
-      .then(data => (this.accounts = data))
+    this.updateAccountsList();
 
     fetch('admin/plaidEnv')
       .then(resp => resp.json())
       .then(data => (this.plaidEnv = data.env))
   },
   methods: {
-    updatePlaidAccessToken: (account, newToken) => {
+    updateAccountsList() {
+      fetch('admin/accounts')
+        .then(resp => resp.json())
+        .then(data => (this.accounts = data))
+    },
+    updatePlaidAccessToken(account, newToken) {
       if (confirm("Are you sure you want to update this token?")) {
         fetch('admin/setPlaidAccessToken', {
           method: 'POST',
@@ -26,7 +29,7 @@ var app = new Vue({
         })
       }
     },
-    testPlaidApi: (account) => {
+    testPlaidApi(account) {
       fetch('admin/testPlaidApiConnection', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -44,7 +47,7 @@ var app = new Vue({
         }
       })
     },
-    syncTransactions: (account) => {
+    syncTransactions(account) {
       fetch('admin/syncTransactions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -54,6 +57,25 @@ var app = new Vue({
           month: new Date().getMonth() + 1,
         })
       })
+    },
+    deleteAccount(account) {
+      if (confirm(`Are you sure you want to delete account: ${account.email}?`)) {
+        fetch('admin/deleteAccount', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ accountId: account.accountId })
+        }).then(() => this.updateAccountsList());
+      }
+    },
+    newAccount() {
+      let email = prompt("Enter new account's email");
+      let password = prompt("Enter new account's password");
+
+      fetch('admin/newAccount', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({email, password})
+      }).then(() => this.updateAccountsList());
     }
   }
 })

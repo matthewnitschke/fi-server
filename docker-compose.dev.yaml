@@ -2,17 +2,10 @@ services:
   # ngrok:
   #   entrypoint: ["echo", "ngrok disabled in dev mode"]
 
-  db:
-    logging:
-      driver: none
-    volumes:
-      - "./mongo-data:/data/db"
-
   server:
     build:
       context: .
       dockerfile: Dockerfile-dev
-    command: nodemon /app/app.js
     volumes:
       - ./:/app
     environment:

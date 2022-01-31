@@ -11,7 +11,7 @@
 
     <style>
         #app {
-            max-width: 50rem;
+            max-width: 60rem;
             margin: 5rem auto;
             text-align: center;
         }
@@ -19,6 +19,8 @@
         .accounts-table {
             margin: auto;
         }
+
+        .mt1 { margin-top: 1.5rem }
 
     </style>
 </head>
@@ -36,12 +38,13 @@
                     <th>Plaid Access Token</th>
                     <th>Test Plaid Api</th>
                     <th>Sync Transactions</th>
+                    <th>Delete</th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="account in accounts">
                     <td>{{ account.email }}</td>
-                    <td>{{ new Date(account.lastLogin).toISOString().substring(0, 10) }}</td>
+                    <td>{{ account.lastLogin != null ? new Date(account.lastLogin).toISOString().substring(0, 10) : "No Login" }}</td>
                     <td>
                         <input 
                             type="text" 
@@ -62,9 +65,22 @@
                             @click="syncTransactions(account)" 
                             value="Sync Transactions" />
                     </td>
+                    <td>
+                        <input
+                            class="pure-button"
+                            type="button"
+                            @click="deleteAccount(account)" 
+                            value="Delete Account" />
+                    </td>
                 </tr>
             </tbody>
         </table>
+
+        <input 
+            type="button"
+            value="New Account"
+            class="pure-button pure-button-primary mt1"
+            @click="newAccount" />
     </div>
 
     <script src="admin/app.js"></script>

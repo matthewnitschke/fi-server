@@ -7,3 +7,5 @@ WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 
 RUN npm add nodemon -g
+
+CMD ["nodemon", "/app/app.js"]

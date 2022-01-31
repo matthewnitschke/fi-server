@@ -3,13 +3,12 @@ module.exports = (req, res, next) => {
   // req.session.bankAccountIds = ["someid"]
   // next();
   
-  console.log(`accountId: ${req.session.accountId}`)
-
+  
   if (req.session.accountId != null) {
+    console.log(`accountId: ${req.session.accountId}`)
     next();
   } else {
-    console.log('Not authenticated')
-    // res.redirect('/login');
+    console.log('Received unauthenticated request')
     res.status(401).send("Not Authenticated");
   }
 };
