@@ -15,7 +15,7 @@ const port = 8080;
   await require('./db')(); // ensure db is initialized
 
   app.use((req, res, next) => {
-    var allowedDomains = ['http://localhost:8888','http://192.168.1.42:8888' ];
+    var allowedDomains = ['http://localhost:8888','http://192.168.1.179' ];
     var origin = req.headers.origin;
     if(allowedDomains.indexOf(origin) > -1){
       res.setHeader('Access-Control-Allow-Origin', origin);
