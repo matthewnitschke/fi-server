@@ -1,6 +1,4 @@
 services:
-  # ngrok:
-  #   entrypoint: ["echo", "ngrok disabled in dev mode"]
 
   server:
     build:
@@ -11,3 +9,6 @@ services:
     environment:
       - NODE_ENV=development
       - SESSION_SECRET="Shhh... development only"
+  
+  client:
+    entrypoint: ["echo", "client disabled in dev mode, npm run start in fi repo"]

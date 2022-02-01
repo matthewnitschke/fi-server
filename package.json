@@ -7,7 +7,9 @@
     "start": "node app.js",
     "format": "prettier --write . --config ../.prettierrc",
     "serve": "doppler run --command=\"docker compose -f docker-compose.yaml -f docker-compose.dev.yaml up\"",
-    "build": "docker-compose -f docker-compose.yaml -f docker-compose.dev.yaml build"
+    "serve-prod": "doppler run --command=\"docker compose -f docker-compose.yaml up\"",
+    "build": "docker-compose -f docker-compose.yaml -f docker-compose.dev.yaml build",
+    "build-prod": "docker-compose -f docker-compose.yaml pull"
   },
   "dependencies": {
     "body-parser": "^1.19.0",

@@ -1,16 +1,6 @@
 version: '3'
 
 services:
-  #   ngrok:
-  #     image: wernight/ngrok:latest
-  #     ports:
-  #       - 4040:4040
-  #     environment:
-  #       NGROK_PROTOCOL: http
-  #       NGROK_PORT: server:8080
-  #       NGROK_AUTH: ${NGROK_AUTH}
-  #     depends_on:
-  #       - server
 
   db:
     logging:
@@ -30,6 +20,11 @@ services:
       SESSION_SECRET: ${SESSION_SECRET}
       PLAID_CLIENT_ID: ${PLAID_CLIENT_ID}
       PLAID_SECRET: ${PLAID_SECRET}
+  
+  client:
+    image: matthewnitschke/fi:latest
+    ports:
+      - "80:80"
 
 volumes:
   fi_data:
