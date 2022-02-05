@@ -4,6 +4,6 @@
   },
   "github": {
     "release": true,
-    "tokenRef": "PERSONAL_GITHUB_TOKEN"
+    "web": true
   }
 }
