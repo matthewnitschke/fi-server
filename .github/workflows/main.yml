@@ -2,9 +2,8 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    tags:
+      - 'v*.*.*'
 
 jobs:
 
@@ -25,8 +24,19 @@ jobs:
          username: ${{ secrets.DOCKERHUB_USERNAME }}
          password: ${{ secrets.DOCKERHUB_TOKEN }}
          
+     - name: Checkout
+       uses: actions/checkout@v2
+     
+     - name: Docker meta
+       id: meta
+       uses: docker/metadata-action@v3
+       with:
+         images: matthewnitschke/fi
+         tags: type=semver,pattern={{version}}
+         
      - name: Build and push
        uses: docker/build-push-action@v2
        with:
          push: true
-         tags: matthewnitschke/fi-server:latest
+         tags: ${{ steps.meta.outputs.tags }}
+         labels: ${{ steps.meta.outputs.labels }}
