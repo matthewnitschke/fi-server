@@ -1,4 +1,4 @@
-const { plaidClient, plaidEnv } = require('./plaid-utils.js');
+const { plaidClient, plaidEnv, syncTransactions } = require('./plaid-utils.js');
 
 const mongoose = require("mongoose");
 const Transaction = require("../../models/Transaction");
@@ -53,7 +53,7 @@ router.post('/set-user-access-token', async (req, res, next) => {
     res.status(500).json({ error: 'unable to set a null access token'})
   }
 
-  await Account.update(
+  await Account.findOneAndUpdate(
     { email },
     { plaidAccessToken }
   );
@@ -68,57 +68,10 @@ router.post('/syncTransactions', async (req, res) => {
   console.log(from, to, email);
   
   let account = await Account.findOne({email});
-  
-  if (account.plaidAccessToken == null) {
-    return res.status(500).json({
-      error: 'Plaid ACCESS_TOKEN not initialized. If just set, try logging in and out again.'
-    })
-  }
-
-  if (!from || !to) {
-    return res.status(500).json({
-      error: 'missing "from" or "to" query parameters'
-    })
-  }
 
   try {
-    let response = await plaidClient.getTransactions(
-      account.plaidAccessToken,
-      from,
-      to,
-      {
-        // account_ids: [],
-        // count: 0,
-        // offset: 0
-      }
-    );
-
-    await Transaction.bulkWrite(
-      response.transactions.map(transaction => ({
-        updateOne: {
-          filter: { _id: transaction.transaction_id },
-          update: {
-            _id: transaction.transaction_id,
-            fiAccountId: req.session.accountId,
-        
-            date: transaction.date,
-            name: transaction.name,
-            merchantName: transaction.merchant_name,
-            amount: transaction.amount,
-            isPending: transaction.pending,
-
-            raw: transaction
-          },
-          upsert: true,
-        }
-      }))
-    );
-
-    await Account.updateOne({
-      _id: req.session.accountId,
-    }, {
-      lastTransactionsSync: new Date(),
-    });
+    let accountId = account._id;
+    await syncTransactions({ accountId, to, from })
 
   } catch(e) {
     console.error(e)

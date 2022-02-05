@@ -20,7 +20,10 @@ router.get('/:year/:month', async (req, res) => {
     return
   }
 
-  res.status(200).json(JSON.parse(foundBudget.storeData));
+  res.status(200).json({
+    budgetId: foundBudget._id,
+    storeData: JSON.parse(foundBudget.storeData)
+  });
 });
 
 router.post('/:year/:month', async (req, res) => {
@@ -37,9 +40,7 @@ router.post('/:year/:month', async (req, res) => {
 
   if (foundBudget) {
     await Budget.findOneAndUpdate(
-      {
-        _id: foundBudget._id,
-      },
+      { _id: foundBudget._id },
       {
         storeData: req.body.serializedStore,
       }
