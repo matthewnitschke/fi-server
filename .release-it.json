@@ -6,6 +6,6 @@
     "release": true,
     "releaseName": "v${version}",
     "web": true,
-    "host": "https://github.com/"
+    "host": "github.com"
   }
 }
