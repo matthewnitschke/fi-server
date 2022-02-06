@@ -31,7 +31,7 @@ jobs:
        id: meta
        uses: docker/metadata-action@v3
        with:
-         images: matthewnitschke/fi
+         images: matthewnitschke/fi-server
          tags: type=semver,pattern={{version}}
          
      - name: Build and push
