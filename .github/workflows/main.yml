@@ -2,6 +2,11 @@ name: Docker Image CI
 
 on:
   workflow_dispatch:
+    inputs:
+      tags:
+        required: true
+        description: 'Version to deploy under'
+        default: 'vx.x.x'
   push:
     tags:
       - 'v*.*.*'
