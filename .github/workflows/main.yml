@@ -3,10 +3,10 @@ name: Docker Image CI
 on:
   workflow_dispatch:
     inputs:
-      tags:
+      tag:
         required: true
-        description: 'Version to deploy under'
-        default: 'vx.x.x'
+        description: 'Docker tag to use'
+        default: 'x.x.x'
   push:
     tags:
       - 'v*.*.*'
@@ -44,5 +44,5 @@ jobs:
        uses: docker/build-push-action@v2
        with:
          push: true
-         tags: ${{ steps.meta.outputs.tags }}
+         tags: ${{ github.event.inputs.tag }} ${{ steps.meta.outputs.tags }}
          labels: ${{ steps.meta.outputs.labels }}
