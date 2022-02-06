@@ -2,19 +2,10 @@ name: Docker Image CI
 
 on:
   workflow_dispatch:
-    inputs:
-      tag:
-        required: true
-        description: 'Docker tag to use'
-        default: 'x.x.x'
-  push:
-    tags:
-      - 'v*.*.*'
 
 jobs:
 
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -29,20 +20,9 @@ jobs:
        with:
          username: ${{ secrets.DOCKERHUB_USERNAME }}
          password: ${{ secrets.DOCKERHUB_TOKEN }}
-         
-     - name: Checkout
-       uses: actions/checkout@v2
      
-     - name: Docker meta
-       id: meta
-       uses: docker/metadata-action@v3
-       with:
-         images: matthewnitschke/fi-server
-         tags: type=semver,pattern={{version}}
-         
      - name: Build and push
        uses: docker/build-push-action@v2
        with:
          push: true
-         tags: ${{ github.event.inputs.tag }} ${{ steps.meta.outputs.tags }}
-         labels: ${{ steps.meta.outputs.labels }}
+         tags: ${{secrets.DOCKERHUB_USERNAME}}/fi-server:$(date +%s)
