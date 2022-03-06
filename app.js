@@ -1,12 +1,8 @@
-const path = require('path');
-
 const express = require('express');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const mongoose = require('mongoose');
 const authentication = require('./middleware/authentication');
-
-var cors = require('cors')
 
 const app = express();
 const port = 8080;
@@ -43,7 +39,6 @@ const port = 8080;
   app.use('/budget', require('./controllers/api/budget'));
   app.use('/transactions', require('./controllers/api/transactions'));
   app.use('/plaid', require('./controllers/api/plaid'));
-  app.use('/plaid-admin', require('./controllers/api/plaid-admin'));
 
 
   app.listen(port, () => {
