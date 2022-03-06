@@ -23,11 +23,13 @@ router.get('/:budgetId', async (req, res) => {
       to: new Date()
     })
   }
-
+  
   let transactions = await Transaction.find({
     fiAccountId: req.session.accountId,
-    $or: [{ budgetId: budgetId }, { budgetId: null }],
-    isIgnored: false,
+    $and: [
+      { $or: [{budgetId}, {budgetId: null}]},
+      { $or: [{isIgnored: false}, {isIgnored: null}]},
+    ],
   });
 
   res.status(200).send(transactions);
