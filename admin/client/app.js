@@ -56,7 +56,19 @@ var app = new Vue({
           year: new Date().getFullYear(),
           month: new Date().getMonth() + 1,
         })
-      })
+      }).then((resp) => {
+        if (resp.status < 300) {
+          alert('Transactions Synced')
+        } else {
+
+          resp.json().then((data) => {
+            console.log('-------- Sync Failure --------');
+            console.log(JSON.stringify(data, null, 2))
+          })
+
+          alert('There was an error syncing transactions');
+        }
+      });
     },
     deleteAccount(account) {
       if (confirm(`Are you sure you want to delete account: ${account.email}?`)) {

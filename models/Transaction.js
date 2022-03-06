@@ -15,8 +15,6 @@ const TransactionSchema = new mongoose.Schema({
   name: String,
   merchantName: String,
   isPending: Boolean,
-
-  raw: Object
 }, {_id: false});
 
 module.exports = mongoose.model('Transaction', TransactionSchema);

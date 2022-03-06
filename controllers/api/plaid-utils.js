@@ -32,7 +32,6 @@ async function syncTransactions({ from, to, accountId }) {
   const fromStr = `${from.getFullYear()}-${padZero(from.getMonth()+1)}-01`
   const toStr = `${to.getFullYear()}-${padZero(to.getMonth()+1)}-${padZero(new Date(to.getFullYear(), to.getMonth() + 1, 0)).getDate()}`
 
-  console.log({fromStr, toStr})
   try {
     let response = await plaidClient.getTransactions(
       account.plaidAccessToken,
@@ -46,17 +45,16 @@ async function syncTransactions({ from, to, accountId }) {
         updateOne: {
           filter: { _id: transaction.transaction_id },
           update: {
-            _id: transaction.transaction_id,
-            fiAccountId: accountId,
+            '$set': {
+              _id: transaction.transaction_id,
+              fiAccountId: accountId,
 
-            date: transaction.date,
-            name: transaction.name,
-            merchantName: transaction.merchant_name,
-            amount: transaction.amount,
-            isPending: transaction.pending,
-            isIgnored: false,
-
-            raw: transaction
+              date: transaction.date,
+              name: transaction.name,
+              merchantName: transaction.merchant_name,
+              amount: transaction.amount,
+              isPending: transaction.pending,
+            }
           },
           upsert: true,
         }
